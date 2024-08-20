@@ -7,7 +7,9 @@ export interface IUser {
     user_phone: number;
     user_address: string;
     user_image: string;
-    is_active: boolean
+    is_active: boolean;
+    codeId?: string;
+    timeExpired?: string; // Thời gian hết hạn xác nhận Email
     user_role?: "USER" | "ADMIN";
     user_accountType?: "ACTIVE" | "BLOCK";
 }

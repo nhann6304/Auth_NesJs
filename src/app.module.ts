@@ -6,7 +6,8 @@ import { NoteModule } from "./apis/note/note.module";
 import { UsersModule } from "./apis/users/users.module";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from "./guards/passport/local-auth.guard";
-
+import { MailerModule } from "@nestjs-modules/mailer";
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
     imports: [
@@ -22,14 +23,43 @@ import { JwtAuthGuard } from "./guards/passport/local-auth.guard";
                 uri: configService.get<string>("MONGODB_URI"),
             }),
             inject: [ConfigService]
-        })
+        }),
+        //Cấu hình send email
+        MailerModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: async (configService: ConfigService) => ({
+                transport: {
+                    host: 'smtp.gmail.com',
+                    port: 465,
+                    // ignoreTLS: true,
+                    secure: true,
+                    auth: {
+                        user: configService.get<string>("MAIL_USER"),
+                        pass: configService.get<string>("MAIL_PASSWORD"),
+                    },
+                },
+                defaults: {
+                    from: '"No Reply" <no-reply@localhost>',
+                },
+                // preview: true,
+                // template: {
+                //     dir: process.cwd() + '/template/',
+                //     adapter: new HandlebarsAdapter(), 
+                //     options: {
+                //         strict: true,
+                //     },
+                // },
+            }),
+            inject: [ConfigService]
+
+        }),
     ],
-    // providers: [
-    //     {
-    //         provide: APP_GUARD,
-    //         useClass: JwtAuthGuard
-    //     }
-    // ]
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard
+        }
+    ]
 })
 
 export class AppModule { } 

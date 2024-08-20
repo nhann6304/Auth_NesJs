@@ -17,10 +17,16 @@ export class CreateUserDto implements Partial<IUser> {
     @IsNotEmpty({ message: "user_password không dược để trống" })
     @ApiProperty({ default: "123" })
     user_password: string
+
     user_phone: number
     user_address: string
     user_image: string
     is_active: boolean;
+    codeId: string;
+    timeExpired: string;
+    user_role?: "USER";
+    user_accountType?: "ACTIVE";
+
 }
 
 

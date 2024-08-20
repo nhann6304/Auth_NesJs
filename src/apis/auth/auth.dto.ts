@@ -14,7 +14,7 @@ export class createAuthDto implements Partial<IUser> {
     user_password?: string;
 }
 
-export class LocalStrategySto implements Partial<IUser> {
+export class LocalStrategyDto implements Partial<IUser> {
     @ApiProperty({ default: "huynhthanhnhan632004@gmail.com" })
     @IsNotEmpty({ message: "User name không đượcc để trống" })
     user_email?: string;

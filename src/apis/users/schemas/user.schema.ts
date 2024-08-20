@@ -28,12 +28,19 @@ export class User implements Partial<IUser> {
     @Prop()
     is_active: boolean
 
+
+
+    @Prop()
+    codeId?: string;
+
     @Prop({ default: 'USER' })
     user_role?: "USER" | "ADMIN";
 
     @Prop({ default: 'ACTIVE' })
     user_accountType?: "ACTIVE" | "BLOCK";
 
+    @Prop()
+    timeExpired?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -20,7 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     async validate(payload: JwtPayload) {
         const infoUser = await this.userService.findByEmail(payload.user_email)
-
         return {
             message: "Lấy người dùng thành công",
             metadata: infoUser,
