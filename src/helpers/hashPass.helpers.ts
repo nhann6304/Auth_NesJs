@@ -13,7 +13,6 @@ export const hashPasswordHelper = async (plainPassword: string) => {
 
 }
 
-
 export const comparePassWordHelper = async (plainPassword: string, hashPassword: string): Promise<boolean> => {// plainPassword mật khẩu nhìn bằng mắt  hashPassword mật khẩu đã hash
     try {
         return await bcrypt.compare(plainPassword, hashPassword);

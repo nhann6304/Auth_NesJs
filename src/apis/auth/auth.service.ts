@@ -14,26 +14,27 @@ export class AuthService {
 
     async login(user: IUser) {
         try {
-            const payload = { user_name: user.user_email, sub: user._id };
+            const payload = { user_email: user.user_email, sub: user._id };
             return {
                 message: "Đăng nhập thành công",
-                access_token: this.jwtService.sign(payload)
+                access_token: this.jwtService.sign(payload),
+                statusCode: 201
             }
         } catch (error) {
             return new BadRequestException("Đăng nhập thất bại")
         }
     }
 
-
     async validateUser(user_email: string, user_password: string): Promise<any> {
         const user: IUser = await this.usersService.findByEmail(user_email);
-        const isValidPassword = await comparePassWordHelper(user_password, user.user_password)
-        if (!user || !isValidPassword) {
+        if (!user) {
             return null;
-        } else {
-            return user
         }
-
-
+        const isValidPassword = await comparePassWordHelper(user_password, user.user_password);
+        if (!isValidPassword) {
+            return null;
+        }
+        return user;
     }
+
 }
