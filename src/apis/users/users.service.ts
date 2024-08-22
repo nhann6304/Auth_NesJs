@@ -6,11 +6,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { hashPasswordHelper } from 'src/helpers/hashPass.helpers';
 import { v4 as uuidv4 } from 'uuid';
 import * as dayjs from 'dayjs';
+import { MailerService } from '@nestjs-modules/mailer';
+import { IUser } from 'interfaces/common/user.interface';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<User>,
+    private readonly mailService: MailerService
 
   ) { }
 
@@ -24,27 +27,32 @@ export class UsersService {
     }
   }
 
-
   async create(createUserDto: CreateUserDto) {
-
     const isExistEmail = await this.isEmailExit(createUserDto.user_email);
-
     if (isExistEmail === true) {
       throw new BadRequestException(`Email ${createUserDto.user_email} đã tồn tại trong hệ thống`)
     }
-
     const hashPassword = await hashPasswordHelper(createUserDto.user_password);
-    const newUser = await this.userModel.create({
+    const codeId = uuidv4()
+    const newUser: IUser = await this.userModel.create({
       ...createUserDto,
       user_password: hashPassword,
       is_active: false,
-      codeId: uuidv4(),
-      timeExpired: dayjs().add(1, "minutes"),
+      codeId: codeId,
+      timeExpired: dayjs().add(30, "seconds"),
       user_role: "USER",
       user_accountType: "ACTIVE",
     })
-
-    console.log(newUser);
+    //Gửi Email
+    this.mailService.sendMail({
+      to: newUser.user_email,
+      subject: "Xác thực tài khoản đăng ký",
+      template: "register",
+      context: {
+        name: newUser.user_name ?? newUser.user_email, // Nếu không có Name thì lấy Email
+        activationCode: codeId
+      }
+    })
     return {
       message: "Tạo người dùng thành công",
       newUser

@@ -26,7 +26,7 @@ export class AuthController {
     @Public()
     @ApiBody({ type: CreateUserDto })
     async register(@Body() createUserDto: CreateUserDto) {
-        return await this.userService.create(createUserDto)
+        return await this.userService.create(createUserDto);
     }
 
     @UseGuards(LocalAuthGuard)
@@ -49,12 +49,7 @@ export class AuthController {
     @Get("mail")
     @Public()
     testMail() {
-        this.mailerService.sendMail({
-            to: "huynhthanhnhan632004@gmail.com",
-            subject: "Test Email",
-            text: "NesJs_Leaning",
-            html: "<h1><b>NesJs_Leaning Test Mail</b></h1>"
-        })
+
         return "OK"
     }
 
