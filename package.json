@@ -36,6 +36,7 @@
     "class-validator": "0.14.1",
     "dayjs": "^1.11.13",
     "handlebars": "4.7.8",
+    "library-common": "^0.0.1",
     "mongoose": "^8.5.3",
     "nodemailer": "6.9.14",
     "passport": "0.7.0",
