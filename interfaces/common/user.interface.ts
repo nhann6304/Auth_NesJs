@@ -1,2 +1,2 @@
-import { UserInterfaceCommon } from "library-common"
+import { UserInterfaceCommon, } from "library-common"
 export interface IUser extends UserInterfaceCommon.IUser { }

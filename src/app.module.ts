@@ -8,12 +8,14 @@ import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from "./guards/passport/local-auth.guard";
 import { MailerModule } from "@nestjs-modules/mailer";
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { ChatModule } from "./apis/chat/chat.module";
 
 @Module({
     imports: [
         AuthModule,
         NoteModule,
         UsersModule,
+        ChatModule,
         // tạo biến mồi trường lấy từ file env
         ConfigModule.forRoot({ isGlobal: true }),
         //Cấu hình  database mongooseDb
